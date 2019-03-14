@@ -53,7 +53,7 @@ class PaydayCommand extends Command
         fclose($file);
         $msg = count(file($filename));
         $msg .= " months added in $filename";
-        $output->writeln($msg);
+        $output->write($msg);
     }
 }
 
