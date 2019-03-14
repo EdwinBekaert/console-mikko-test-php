@@ -29,8 +29,8 @@ class PaydayCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dayOfSalary = '10';
-        $dayOfBonus = '31';
+        $dayOfSalary = 't';
+        $dayOfBonus = '15';
         $paydaySalaryMissedStrategy = MissedStrategy::LastFriday;
         $paydayBonusMissedStrategy = MissedStrategy::NextWednesday;
 

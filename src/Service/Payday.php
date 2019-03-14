@@ -24,7 +24,9 @@ class Payday
     public function getPaydayForMonth(int $month, String $dayOfPay, string $missedStrategy) // why $missedStrategy cannot be MissedStrategy class?
     {
         $today = $this->today; // strtotime('today');
-        $payday = strtotime(date("Y-$month-$dayOfPay", $today));
+        $firstOfMonth = strtotime(date('Y',$today)."-$month-1");
+        $payday = strtotime(date("Y-$month-$dayOfPay", $firstOfMonth));
+
         if($payday < $today) return null;
         switch (date('N', $payday)) {
             case 6:

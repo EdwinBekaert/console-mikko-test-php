@@ -19,7 +19,7 @@ class ExampleCommandTest extends TestCase
         $application = new Application();
         $application->add(new ExampleCommand());
 
-        $command = $application->find('example');
+        $command = $application->find('app:example');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
