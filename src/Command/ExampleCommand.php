@@ -19,7 +19,7 @@ class ExampleCommand extends Command
 
     protected function configure()
     {
-        $this->setName('example')
+        $this->setName('app:example')
             ->setDescription('Example command')
             ->setHelp('This is an example command');
     }

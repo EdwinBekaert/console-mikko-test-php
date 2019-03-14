@@ -47,5 +47,6 @@ payment date for that month, and a column that contains the bonus payment date.
 ### How to
 
 * Tests can be run with: ```composer test```
-* App can be run wit: ```php app```
+* list functions of the app: ```php app list```
+* start the payday app: ```php app app:payday```
 

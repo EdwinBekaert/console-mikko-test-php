@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Utils\MissedStrategy;
+use App\Util\MissedStrategy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +20,7 @@ class PaydayCommand extends Command
 
     protected function configure()
     {
-        $this->setName('payday')
+        $this->setName('app:payday')
             ->setDescription('Generate CSV to determine the dates to pay salaries to the sales department.')
             ->setHelp('run php app payday.');
     }
