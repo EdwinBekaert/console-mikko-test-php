@@ -8,9 +8,9 @@ declare(strict_types=1);
  * Time: 16:01
  */
 
-namespace App\Service;
+namespace test\Service;
 
-
+use App\Service\Payday;
 use App\Util\MissedStrategy;
 use PHPUnit\Framework\TestCase;
 

@@ -51,4 +51,5 @@ payment date for that month, and a column that contains the bonus payment date.
 * Tests can be run with: ```composer test```
 * list functions of the app: ```php app list```
 * start the payday app: ```php app app:payday```
+* csv will be saved in /out directory
 

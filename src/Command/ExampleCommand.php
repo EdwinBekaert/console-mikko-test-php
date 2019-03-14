@@ -14,7 +14,6 @@ class ExampleCommand extends Command
     {
         parent::__construct();
 
-        // TODO: inject and initialize any services needed for the command here
     }
 
     protected function configure()

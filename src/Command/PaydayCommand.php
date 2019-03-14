@@ -29,27 +29,31 @@ class PaydayCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dayOfSalary = 't';
-        $dayOfBonus = '15';
+        $dayOfSalary = '5';
+        $dayOfBonus = '7';
         $paydaySalaryMissedStrategy = MissedStrategy::LastFriday;
         $paydayBonusMissedStrategy = MissedStrategy::NextWednesday;
+        $dateFormat = 'd-m-Y';
+        $filename = 'out/contacts.csv';
 
         $today = strtotime('today');
         $thisMonth = (int)date('n', $today);
 
-        $output->writeln($today);
-        $output->writeln($thisMonth);
+        $file = fopen($filename, 'w');
 
         for ($month = $thisMonth; $month <= 12; $month++) {
-
             $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
             $paydayBonus = $this->payday->getPaydayForMonth($month, $dayOfBonus, $paydayBonusMissedStrategy);
-            $monthName = date('F',strtotime("2019-$month-1"));
-            $output->writeln("doing the month: $month ($monthName)");
-            if($paydaySalary != null) $output->writeln('date of salary:' . date('d-m-Y', $paydaySalary));
-            if($paydayBonus != null) $output->writeln('date of Bonus:' . date('d-m-Y', $paydayBonus));
-
+            $monthName = date('F', strtotime("2019-$month-1"));
+            $paydaySalaryFormatted = $paydaySalary == null ? $paydaySalary : date($dateFormat, $paydaySalary);
+            $paydayBonusFormatted = $paydayBonus == null ? $paydayBonus : date($dateFormat, $paydayBonus);
+            $csvData = [$monthName, $paydaySalaryFormatted, $paydayBonusFormatted];
+            fputcsv($file, $csvData);
         }
+        fclose($file);
+        $msg = count(file($filename));
+        $msg .= " months added in $filename";
+        $output->writeln($msg);
     }
 }
 

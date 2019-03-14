@@ -1,14 +1,22 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * Created by PhpStorm.
+ * User: edwin
+ * Date: 14/03/2019
+ * Time: 20:40
+ */
+
 namespace test\Command;
 
-use App\Command\ExampleCommand;
+use App\Command\PaydayCommand;
+use App\Service\Payday;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ExampleCommandTest extends TestCase
+class PaydayCommandTest extends TestCase
 {
     /**
      * @test
@@ -16,13 +24,14 @@ class ExampleCommandTest extends TestCase
     public function command_outputs_info()
     {
         $application = new Application();
-        $application->add(new ExampleCommand());
+        $payday = new Payday(null);
+        $application->add(new PaydayCommand($payday));
 
-        $command = $application->find('app:example');
+        $command = $application->find('app:payday');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('This is an example', $output);
+        $this->assertContains('10 months added in ./out/contacts.csv', $output);
     }
 }
