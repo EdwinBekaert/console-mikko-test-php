@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  console:
+    image: edwinbekaert/console-mikko-test-php:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/app"
