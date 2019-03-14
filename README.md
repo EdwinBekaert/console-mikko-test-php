@@ -46,6 +46,6 @@ payment date for that month, and a column that contains the bonus payment date.
 
 ### How to
 
-* Tests can be run with: ```bash composer test```
-* hApp can be run wit: ```bash php app```
+* Tests can be run with: ```composer test```
+* App can be run wit: ```php app```
 
