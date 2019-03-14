@@ -12,9 +12,18 @@ use App\Util\MissedStrategy;
 
 class Payday
 {
-    public function getPaydayForMonth(int $month, int $dayOfPay, string $missedStrategy) // why $missedStrategy cannot be MissedStrategy class?
+
+    private $today;
+
+    public function __construct(int $startDay = null)
     {
-        $today = strtotime('today');
+        // TODO I have no idea how to autowire a construct param :: trick with null
+        $this->today = $startDay == null ? strtotime('today') : $startDay;
+    }
+
+    public function getPaydayForMonth(int $month, String $dayOfPay, string $missedStrategy) // why $missedStrategy cannot be MissedStrategy class?
+    {
+        $today = $this->today; // strtotime('today');
         $payday = strtotime(date("Y-$month-$dayOfPay", $today));
         if($payday < $today) return null;
         switch (date('N', $payday)) {
@@ -25,6 +34,7 @@ class Payday
                 if($payday < $today) return null; // make sure we are still in the future
                 break;
         }
+        if(date("Y",$payday) > date("Y",$today)) return null;
         return $payday;
     }
 }

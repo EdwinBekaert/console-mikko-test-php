@@ -44,6 +44,8 @@ payment date for that month, and a column that contains the bonus payment date.
   
 * If today is the date of paying salary or bonus; we expect the salary not yet being paid and will as such appear in the CSV  
 
+* If 31 december is in the weekend and the Missed Strategy is next monday we don't include the pay day as it is for next year  
+
 ### How to
 
 * Tests can be run with: ```composer test```

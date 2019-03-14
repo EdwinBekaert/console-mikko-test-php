@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Service\Payday;
 use App\Util\MissedStrategy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,81 +12,43 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PaydayCommand extends Command
 {
 
-    public function __construct()
-    {
-        parent::__construct();
+    private $payday;
 
-        // TODO: inject and initialize any services needed for the command here
+    public function __construct(Payday $payday)
+    {
+        $this->payday = $payday;
+        parent::__construct();
     }
 
     protected function configure()
     {
         $this->setName('app:payday')
             ->setDescription('Generate CSV to determine the dates to pay salaries to the sales department.')
-            ->setHelp('run php app payday.');
+            ->setHelp('php app app:payday.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dayOfSalary = '10';
-        $dayOfBonus = 11;
+        $dayOfBonus = '31';
         $paydaySalaryMissedStrategy = MissedStrategy::LastFriday;
         $paydayBonusMissedStrategy = MissedStrategy::NextWednesday;
 
         $today = strtotime('today');
-        $thisMonth = date('n', $today);
+        $thisMonth = (int)date('n', $today);
 
         $output->writeln($today);
         $output->writeln($thisMonth);
 
         for ($month = $thisMonth; $month <= 12; $month++) {
 
-            $output->writeln("doing the month: $month");
-            $paydaySalary = strtotime(date("Y-$month-$dayOfSalary", $today));
-            $paydayBonus = strtotime(date("Y-$month-$dayOfBonus", $today));
+            $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
+            $paydayBonus = $this->payday->getPaydayForMonth($month, $dayOfBonus, $paydayBonusMissedStrategy);
+            $monthName = date('F',strtotime("2019-$month-1"));
+            $output->writeln("doing the month: $month ($monthName)");
+            if($paydaySalary != null) $output->writeln('date of salary:' . date('d-m-Y', $paydaySalary));
+            if($paydayBonus != null) $output->writeln('date of Bonus:' . date('d-m-Y', $paydayBonus));
 
-            $output->writeln("time of salary: $paydaySalary");
-            $output->writeln('date of salary:' . date('d-m-Y', $paydaySalary));
-            $output->writeln("time of Bonus: $paydayBonus");
-            $output->writeln('date of Bonus:' . date('d-m-Y', $paydayBonus));
-
-            $output->writeln('======== SALARY =========');
-            if($paydaySalary >= $today) {
-                switch (date('N', $paydaySalary)) {
-                    case 6:
-                    case 7:
-                        $output->writeln('weekend');
-                        // next monday
-                        $paydaySalary = strtotime($paydaySalaryMissedStrategy, $paydaySalary);
-                        $output->writeln("payday $paydaySalaryMissedStrategy: $paydaySalary");
-                        $output->writeln(date('N', $paydaySalary));
-                        $output->writeln('date of salary:' . date('d-m-Y', $paydaySalary));
-                        break;
-                    default:
-                        $output->writeln('workday');
-                        $output->writeln(date('N', $paydaySalary));
-                        $output->writeln('date of salary:' . date('d-m-Y', $paydaySalary));
-                }
-            }
-
-            $output->writeln('======== BONUS =========');
-            if($paydayBonus >= $today) {
-                switch (date('N', $paydayBonus)) {
-                    case 6:
-                    case 7:
-                        $output->writeln('weekend');
-                        // next wednesday
-                        $paydayBonus = strtotime($paydayBonusMissedStrategy, $paydayBonus);
-                        $output->writeln("payday $paydayBonusMissedStrategy: $paydayBonus");
-                        $output->writeln(date('N', $paydayBonus));
-                        $output->writeln('date of Bonus:' . date('d-m-Y', $paydayBonus));
-                        break;
-                    default:
-                        $output->writeln('workday');
-                        $output->writeln(date('N', $paydayBonus));
-                        $output->writeln('date of Bonus:' . date('d-m-Y', $paydayBonus));
-                }
-            }
         }
     }
 }
