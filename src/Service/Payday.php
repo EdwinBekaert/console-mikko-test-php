@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: edwin
@@ -7,8 +9,6 @@
  */
 
 namespace App\Service;
-
-use App\Util\MissedStrategy;
 
 class Payday
 {

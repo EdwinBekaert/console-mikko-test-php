@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: edwin
@@ -19,7 +21,7 @@ class PaydayTest extends TestCase
     {
         $today = strtotime('-5 days');
         $payday = new Payday($today);
-        $thisMonth = date('n', $today);
+        $thisMonth = (int)date('n', $today);
 
         $result = $payday->getPaydayForMonth($thisMonth,date('j', $today),MissedStrategy::LastFriday);
 
@@ -31,7 +33,7 @@ class PaydayTest extends TestCase
     {
         $today = strtotime('2019-03-14'); // march has last day in weekenddate('d-m-Y', $paydayBonus)date('d-m-Y', $paydayBonus)
         $payday = new Payday($today);
-        $dayOfPay = 31;
+        $dayOfPay = '31';
         $thisMonth = 3; // a month of 31 days
 
         $result = $payday->getPaydayForMonth($thisMonth, $dayOfPay,MissedStrategy::LastFriday);
@@ -65,9 +67,9 @@ class PaydayTest extends TestCase
     {
         $today = strtotime('2017-12-01'); // 31/12/2017 is a sunday -> pay next monday... not allowed...
         $payday = new Payday($today);
-        $thisMonth = date('n', $today);
+        $thisMonth = (int)date('n', $today);
 
-        $result = $payday->getPaydayForMonth($thisMonth,31,MissedStrategy::NextMonday);
+        $result = $payday->getPaydayForMonth($thisMonth,'31',MissedStrategy::NextMonday);
 
         // assert that result is null
         $this->assertEquals(null, $result);
