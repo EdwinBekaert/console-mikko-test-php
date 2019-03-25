@@ -21,7 +21,8 @@ class Payday
         $this->today = $startDay == null ? strtotime('today') : $startDay;
     }
 
-    public function getPaydayForMonth(int $month, String $dayOfPay, string $missedStrategy) // why $missedStrategy cannot be MissedStrategy class?
+    // why $missedStrategy cannot be MissedStrategy class? PHP enum must be fixed...
+    public function getPaydayForMonth(int $month, String $dayOfPay, String $missedStrategy) : ?int
     {
         $today = $this->today; // strtotime('today');
         $firstOfMonth = strtotime(date('Y',$today)."-$month-1");
