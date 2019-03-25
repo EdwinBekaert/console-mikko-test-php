@@ -36,11 +36,12 @@ class PaydayCommand extends Command
         $paydayBonusMissedStrategy = MissedStrategy::NextWednesday;
         $dateFormat = 'd-m-Y';
         $filename = 'out/paydates.csv';
+        $filepath = realpath(__DIR__ .'/../../'.$filename);
 
         $today = Util::strtotime('today');
         $thisMonth = (int)date('n', $today);
 
-        $file = fopen($filename, 'w');
+        $file = fopen($filepath, 'w');
 
         for ($month = $thisMonth; $month <= 12; $month++) {
             $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
@@ -52,7 +53,7 @@ class PaydayCommand extends Command
             fputcsv($file, $csvData);
         }
         fclose($file);
-        $msg = count(file($filename));
+        $msg = count(file($filepath));
         $msg .= " months added in $filename";
         $output->write($msg);
     }
