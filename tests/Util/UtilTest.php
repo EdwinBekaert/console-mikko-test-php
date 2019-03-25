@@ -43,9 +43,4 @@ class UtilTest extends TestCase
         $this->assertEquals($accepted,$actual);
     }
 
-    public function testDateThrows()
-    {
-        $this->expectException('InvalidArgumentException');
-        Util::date('d-m-Y', strtotime('illegal date as well'));
-    }
 }
