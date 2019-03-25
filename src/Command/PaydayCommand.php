@@ -39,7 +39,7 @@ class PaydayCommand extends Command
         $paydayBonusMissedStrategy = MissedStrategy::NextWednesday;
         $dateFormat = 'd-m-Y';
         $filename = 'out/paydates.csv';
-        $filepath = realpath(__DIR__ . '/../../' . $filename);
+        $filepath = Util::realpath(__DIR__ . '/../../' . $filename);
 
         $today = Util::strtotime('today');
         $thisMonth = (int)date('n', $today);
@@ -47,7 +47,7 @@ class PaydayCommand extends Command
         try {
 
             $file = Util::fopen($filepath, 'w');
-            fputcsv($file, ['month','salary payday','bonus payday']); // headers for csv
+            Util::fputcsv($file, ['month','salary payday','bonus payday']); // headers for csv
 
             for ($month = $thisMonth; $month <= 12; $month++) {
                 $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
@@ -56,7 +56,7 @@ class PaydayCommand extends Command
                 $paydaySalaryFormatted = $paydaySalary == null ? $paydaySalary : date($dateFormat, $paydaySalary);
                 $paydayBonusFormatted = $paydayBonus == null ? $paydayBonus : date($dateFormat, $paydayBonus);
                 $csvData = [$monthName, $paydaySalaryFormatted, $paydayBonusFormatted];
-                fputcsv($file, $csvData);
+                Util::fputcsv($file, $csvData);
             }
             Util::fclose($file);
             $msg = count(file($filepath)) -1; // deduct the header line

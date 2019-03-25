@@ -59,4 +59,14 @@ class UtilTest extends TestCase
         $this->assertNull(Util::fclose(null));
     }
 
+    public function testRealpathThrows()
+    {
+        $path = "../.dcsc./cds/cds";
+        $errorMsg = "Sorry, can't find path: $path";
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage($errorMsg);
+        Util::realpath($path);
+    }
+
+
 }

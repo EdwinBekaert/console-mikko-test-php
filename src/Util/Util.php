@@ -36,4 +36,12 @@ class Util
     static function fclose($handle = null) {
         if($handle !== null) fclose($handle);
     }
+
+    static function fputcsv ( $handle , array $fields, string $delimiter = ",", string $enclosure = '"', string $escape_char = "\\" ) : int {
+        return self::unFalsify("Sorry, can't write to file.",'fputcsv', [$handle, $fields, $delimiter, $enclosure, $escape_char]);
+    }
+
+    static function realpath ( string $path ) : string {
+        return self::unFalsify("Sorry, can't find path: $path",'realpath', [$path]);
+    }
 }
