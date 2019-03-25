@@ -47,7 +47,7 @@ class PaydayCommand extends Command
         try {
 
             $file = Util::fopen($filepath, 'w');
-
+            
             for ($month = $thisMonth; $month <= 12; $month++) {
                 $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
                 $paydayBonus = $this->payday->getPaydayForMonth($month, $dayOfBonus, $paydayBonusMissedStrategy);
@@ -57,13 +57,14 @@ class PaydayCommand extends Command
                 $csvData = [$monthName, $paydaySalaryFormatted, $paydayBonusFormatted];
                 fputcsv($file, $csvData);
             }
-            fclose($file);
+            Util::fclose($file);
             $msg = count(file($filepath));
             $msg .= " months added in $filename";
             $output->write($msg);
 
         } catch (Throwable $t) {
             $output->writeln($t->getMessage());
+            Util::fclose($file); // make sure the resource is closed
         }
 
     }

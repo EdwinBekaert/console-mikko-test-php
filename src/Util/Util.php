@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Util;
 
 use InvalidArgumentException;
-use phpDocumentor\Reflection\Types\Resource_;
 
 class Util
 {
@@ -32,5 +31,9 @@ class Util
 
     static function fopen(string $filename, string $mode) {
         return self::unFalsify("Sorry, can't open file: $filename",'fopen', [$filename, $mode]);
+    }
+
+    static function fclose($handle = null) {
+        if($handle !== null) fclose($handle);
     }
 }
