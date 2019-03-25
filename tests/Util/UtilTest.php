@@ -45,4 +45,18 @@ class UtilTest extends TestCase
         $this->assertEquals($accepted,$actual);
     }
 
+    public function testFopenThrows()
+    {
+        $filename = " dffsf ";
+        $errorMsg = "Sorry, can't open file: $filename";
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage($errorMsg);
+        Util::fopen($filename, 'r');
+    }
+
+    public function testFcloseAllowsNull()
+    {
+        $this->assertNull(Util::fclose(null));
+    }
+
 }
