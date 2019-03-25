@@ -41,22 +41,27 @@ class PaydayCommand extends Command
         $today = Util::strtotime('today');
         $thisMonth = (int)date('n', $today);
 
+        try {
 
-        $file = Util::fopen($filepath, 'w');
+            $file = Util::fopen($filepath, 'w');
 
-        for ($month = $thisMonth; $month <= 12; $month++) {
-            $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
-            $paydayBonus = $this->payday->getPaydayForMonth($month, $dayOfBonus, $paydayBonusMissedStrategy);
-            $monthName = date('F', Util::strtotime("2019-$month-1"));
-            $paydaySalaryFormatted = $paydaySalary == null ? $paydaySalary : date($dateFormat, $paydaySalary);
-            $paydayBonusFormatted = $paydayBonus == null ? $paydayBonus : date($dateFormat, $paydayBonus);
-            $csvData = [$monthName, $paydaySalaryFormatted, $paydayBonusFormatted];
-            fputcsv($file, $csvData);
+            for ($month = $thisMonth; $month <= 12; $month++) {
+                $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
+                $paydayBonus = $this->payday->getPaydayForMonth($month, $dayOfBonus, $paydayBonusMissedStrategy);
+                $monthName = date('F', Util::strtotime("2019-$month-1"));
+                $paydaySalaryFormatted = $paydaySalary == null ? $paydaySalary : date($dateFormat, $paydaySalary);
+                $paydayBonusFormatted = $paydayBonus == null ? $paydayBonus : date($dateFormat, $paydayBonus);
+                $csvData = [$monthName, $paydaySalaryFormatted, $paydayBonusFormatted];
+                fputcsv($file, $csvData);
+            }
+            fclose($file);
+            $msg = count(file($filepath));
+            $msg .= " months added in $filename";
+            $output->write($msg);
+
+        } catch (Throwable $t) {
+            $output->writeln($t->getMessage());
         }
-        fclose($file);
-        $msg = count(file($filepath));
-        $msg .= " months added in $filename";
-        $output->write($msg);
 
     }
 }
