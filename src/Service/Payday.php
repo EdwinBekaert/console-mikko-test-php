@@ -17,10 +17,10 @@ class Payday
 
     private $startDate;
 
-    public function __construct(int $startDay = null)
+    public function __construct(int $startDate = null)
     {
         // TODO I have no idea how to autowire a construct param :: trick with null
-        $this->startDate = $startDay ?? Util::strtotime('today');
+        $this->startDate = $startDate ?? Util::strtotime('today');
     }
 
     public function getStartDate(){
