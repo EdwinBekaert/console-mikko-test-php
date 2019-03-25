@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Util\Util;
+
 class Payday
 {
 
@@ -18,7 +20,7 @@ class Payday
     public function __construct(int $startDay = null)
     {
         // TODO I have no idea how to autowire a construct param :: trick with null
-        $this->startDate = $startDay ?? strtotime('today');
+        $this->startDate = $startDay ?? Util::strtotime('today');
     }
 
     public function getStartDate(){
@@ -28,16 +30,17 @@ class Payday
     // why $missedStrategy cannot be MissedStrategy class? PHP enum must be fixed...
     public function getPaydayForMonth(int $month, String $dayOfPay, String $missedStrategy) : ?int
     {
-        $today = $this->startDate; // strtotime('today');
-        $firstOfMonth = strtotime(date('Y',$today)."-$month-1");
-        $payday = strtotime(date("Y-$month-$dayOfPay", $firstOfMonth));
+
+        $today = $this->startDate;
+        $firstOfMonth = Util::strtotime(date('Y',$today)."-$month-1");
+        $payday = Util::strtotime(date("Y-$month-$dayOfPay", $firstOfMonth));
 
         if($payday < $today) return null;
         switch (date('N', $payday)) {
             case 6:
             case 7:
                 // weekend
-                $payday = strtotime($missedStrategy, $payday);
+                $payday = Util::strtotime($missedStrategy, $payday);
                 if($payday < $today) return null; // make sure we are still in the future
                 break;
         }

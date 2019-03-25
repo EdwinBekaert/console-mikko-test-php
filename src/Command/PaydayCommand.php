@@ -5,6 +5,7 @@ namespace App\Command;
 
 use App\Service\Payday;
 use App\Util\MissedStrategy;
+use App\Util\Util;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,7 +37,7 @@ class PaydayCommand extends Command
         $dateFormat = 'd-m-Y';
         $filename = 'out/paydates.csv';
 
-        $today = strtotime('today');
+        $today = Util::strtotime('today');
         $thisMonth = (int)date('n', $today);
 
         $file = fopen($filename, 'w');
@@ -44,7 +45,7 @@ class PaydayCommand extends Command
         for ($month = $thisMonth; $month <= 12; $month++) {
             $paydaySalary = $this->payday->getPaydayForMonth($month, $dayOfSalary, $paydaySalaryMissedStrategy);
             $paydayBonus = $this->payday->getPaydayForMonth($month, $dayOfBonus, $paydayBonusMissedStrategy);
-            $monthName = date('F', strtotime("2019-$month-1"));
+            $monthName = date('F', Util::strtotime("2019-$month-1"));
             $paydaySalaryFormatted = $paydaySalary == null ? $paydaySalary : date($dateFormat, $paydaySalary);
             $paydayBonusFormatted = $paydayBonus == null ? $paydayBonus : date($dateFormat, $paydayBonus);
             $csvData = [$monthName, $paydaySalaryFormatted, $paydayBonusFormatted];
