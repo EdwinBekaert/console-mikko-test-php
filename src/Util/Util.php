@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Util;
 
 use InvalidArgumentException;
+use phpDocumentor\Reflection\Types\Resource_;
 
 class Util
 {
@@ -29,4 +30,7 @@ class Util
         return self::unFalsify("not a valid date. received: $time",'strtotime', [$time, $now ?? time()]); // if now is null then time
     }
 
+    static function fopen(string $filename, string $mode) {
+        return self::unFalsify("Sorry, can't open file: $filename",'fopen', [$filename, $mode]);
+    }
 }
