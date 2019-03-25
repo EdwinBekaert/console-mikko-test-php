@@ -34,7 +34,7 @@ class PaydayCommand extends Command
         $paydaySalaryMissedStrategy = MissedStrategy::LastFriday;
         $paydayBonusMissedStrategy = MissedStrategy::NextWednesday;
         $dateFormat = 'd-m-Y';
-        $filename = 'out/contacts.csv';
+        $filename = 'out/paydates.csv';
 
         $today = strtotime('today');
         $thisMonth = (int)date('n', $today);

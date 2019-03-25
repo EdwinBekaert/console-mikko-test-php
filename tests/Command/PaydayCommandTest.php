@@ -32,6 +32,6 @@ class PaydayCommandTest extends TestCase
         $commandTester->execute(['command' => $command->getName()]);
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('10 months added in out/contacts.csv', $output);
+        $this->assertContains('10 months added in out/paydates.csv', $output);
     }
 }
