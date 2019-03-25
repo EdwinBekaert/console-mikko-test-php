@@ -9,6 +9,7 @@ use App\Util\Util;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 class PaydayCommand extends Command
 {
@@ -30,6 +31,8 @@ class PaydayCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        error_reporting(E_ERROR); // disable errors for user
+
         $dayOfSalary = 't'; // t is last day of month
         $dayOfBonus = '15';
         $paydaySalaryMissedStrategy = MissedStrategy::LastFriday;
