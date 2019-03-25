@@ -17,6 +17,11 @@ use PHPUnit\Framework\TestCase;
 class PaydayTest extends TestCase
 {
 
+    public function testPaydayWithoutConstructArgument(){
+        $payday = new Payday();
+        $this->assertEquals(strtotime('today'), $payday->getStartDate());
+    }
+
     public function testPaydayInThePastShouldReturnNull()
     {
         $today = strtotime('-5 days');

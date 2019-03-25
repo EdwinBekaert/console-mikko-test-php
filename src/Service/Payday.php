@@ -13,18 +13,22 @@ namespace App\Service;
 class Payday
 {
 
-    private $today;
+    private $startDate;
 
     public function __construct(int $startDay = null)
     {
         // TODO I have no idea how to autowire a construct param :: trick with null
-        $this->today = $startDay == null ? strtotime('today') : $startDay;
+        $this->startDate = $startDay ?? strtotime('today');
+    }
+
+    public function getStartDate(){
+        return $this->startDate;
     }
 
     // why $missedStrategy cannot be MissedStrategy class? PHP enum must be fixed...
     public function getPaydayForMonth(int $month, String $dayOfPay, String $missedStrategy) : ?int
     {
-        $today = $this->today; // strtotime('today');
+        $today = $this->startDate; // strtotime('today');
         $firstOfMonth = strtotime(date('Y',$today)."-$month-1");
         $payday = strtotime(date("Y-$month-$dayOfPay", $firstOfMonth));
 
