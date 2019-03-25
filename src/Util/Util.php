@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: edwin
@@ -8,8 +10,6 @@
 
 namespace App\Util;
 
-
-use Exception;
 use InvalidArgumentException;
 
 class Util
